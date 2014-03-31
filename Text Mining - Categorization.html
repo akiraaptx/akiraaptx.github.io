@@ -118,6 +118,55 @@ short news articles or paper abstracts. The number of different words in big doc
 big collection can reach hundreds of thousands; moreover, the document representation vectors, although sparse, may still have hundreds and thousands of nonzero
 components.</p>
 
+<p>Most of those words are irrelevant to the categorization task and can be dropped
+with no harm to the classifier performance and may even result in improvement
+owing to noise reduction. The preprocessing step that removes the irrelevant words
+is called feature selection. Most TC systems at least remove the stop words– the
+function words and in general the common words of the language that usually do
+not contribute to the semantics of the documents and have no real added value.
+Many systems, however, perform a much more aggressive filtering, removing 90 to
+99 percent of all features.</p>
+
+<p>In order to perform the filtering, a measure of the relevance of each feature needs to be defined. Probably the simplest such measure is the document frequency $DocFreq(w)$. Experimental evidence suggests that using only the top 10 percent of the most frequent words does not reduce the performance of classifiers. This seems to contradict the well-known “law” of IR, according to which the terms with low-to-medium document frequency are the most informative. There is no contradiction, however, because the large majority of all words have a very low document frequency, and the top 10 percent do contain all low-to-medium frequency words.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Dimensionality Reduction by Feature Extraction</h3>
+<p>Another way of reducing the number of dimensions is to create a new, much smaller
+set of synthetic features from the original feature set. In effect, this amounts to creating a transformation from the original feature space to another space of much lower
+dimension. The rationale for using synthetic features rather than naturally occurring words (as the simpler feature filtering method does) is that, owing to polysemy,
+homonymy, and synonymy, the words may not be the optimal features. By transforming the set of features it may be possible to create document representations that do
+not suffer from the problems inherent in those properties of natural language.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>MACHINE LEARNING APPROACH TO TC</h2>
+<p>In the ML approach, the classifier is built automatically by learning the properties
+of categories from a set of preclassified training documents. In the ML terminology,
+the learning process is an instance of supervised learning because the process is
+guided by applying the known true category assignment function on the training
+set. The unsupervised version of the classification task, calledclustering, is described
+in Chapter V. There are many approaches to classifier learning; some of them are
+variants of more general ML algorithms, and others have been created specifically
+for categorization.</p>
+
+<p>Four main issues need to be considered when using machine learning techniques
+to develop an application based on text categorization.
+  <ul>
+    <li>First, we need to decide on the categories that will be used to classify the instances.</li>
+    <li>Second, we need to provide a training set for each of the categories. As a rule of thumb, about 30 examples are needed for each category.</li>
+    <li>Third, we need to decide on the features that represent each of the instances. Usually, it is better to generate as many features as possible because most of the algorithms will be able to focus just on the relevant features.</li>
+    <li>Finally, we need to decide on the algorithm to be used for the categorization.</li>
+  </ul>        
+</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Probabilistic Classifiers</h3>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Bayesian Logistic Regression</h3>
+
+
+
+
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
