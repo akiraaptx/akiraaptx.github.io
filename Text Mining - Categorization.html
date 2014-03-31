@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Python</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/prism.css">
+
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/prism.js"></script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Akiraaptx in GitHub</h1>
+        <p class="header">Technology PAGE</p>
+
+        <ul>
+          <li><a class="buttons github" href="https://www.facebook.com/yuan.ma.798">Facebook</a></li>
+        </ul>
+
+      </header>
+      <section>
+        <h1>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Gategorization</h1>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>APPLICATIONS OF TEXT CATEGORIZATION</h2>
+<p>Three common TC applications are text indexing, document sorting and text filtering,
+and Web page categorization. These are only a small set of possible applications, but
+they demonstrate the diversity of the domain and the variety of the TC subcases.</p>
+
+<p>The other applications described in this section usually constrain the number of
+categories to which a document may belong. Hierarchical Web page categorization,
+however, constrains the number of documents belonging to a particular category to
+prevent the categories from becoming excessively large. Whenever the number of
+documents in a category exceedsk, it should be split into two or more subcategories.
+Thus, the categorization system must support adding new categories and deleting
+obsolete ones.</p>
+
+<p>Another feature of the problem is the hypertextual nature of the documents. The
+Web documents contain links, which may be important sources of information for
+the classifier because linked documents often share semantics.</p>
+
+<p>The hierarchical structure of the set of categories is also uncommon. It can be
+dealt with by using a separate classifier at every branching point of the hierarchy.</p>
+
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Hierarchical Web Page Categorization</h3>
+<p>A common use of TC is the automatic classification of Web pages under the hierarchical catalogues posted by popular Internet portals such as Yahoo. Such catalogues
+are very useful for direct browsing and for restricting the query-based search to pages
+belonging to a particular topic.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>DEFINITION OF THE PROBLEM</h2>
+<p>The general text categorization task can be formally defined as the task of approximating an unknown category assignment function $F: D \times C \to \{0,1\}$, where $D$ is the set of all possible documents and $C$ is the set of predefined categories. The value of $F(d, c)$ is 1 if the document $d$ belongs to the category $c$ and 0 otherwirse. The approximating function $M: D \times C \to \{0, 1\}$ is called a classifier, and the task is to build a classifier that produces results as "close" as possible to the true category assignment function $F$.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Single-Label versus Multilabel Categoization</h3>
+<p>Depending on the properties of $F$, we can distinguish between single-lable an multilabel categorization. In multilabel categorization the categories overlap, and a doucment may belong to any number of categories. In single-label categorization, each doucment belongs to exactly one category. Binary categorization is a special case of single-label categorization in which the number of categories is two. The binary case is the most important because it is the simplest, most common, and most often used for the demonstration of categorization techniques. Also, the general single-label case is frequently a simple generalization of the binary case. The multilabel case can be solved by $|C|$ binary classifiers ($|C|$ is the number of categories), one for each category, provided the decisions to assign a document to different ctegories are independent from each other.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Document-Pivoted versus Category-Pivoted Categorization</h3>
+<p>Usually, the classifiers are used in the following way: Given a document, the classifier finds all categories to which the document belongs. This is called adocument-pivoted categorization. Alternatively, we might need to find all documents that should be filed under a given category. This is called acategory-pivoted categorization. The difference is significant only in the case in which not all documents or not all categories are immediately available. For instance, in “online” categorization, the documents come in one-by-one, and thus only the document-pivoted categorization is possible. On the other hand, if the categories set is not fixed, and if the documents need to be
+reclassified with respect to the newly appearing categories, then category-pivoted categorization is appropriate. However, most of the techniques described in this
+chapter allow both.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Hard versus Soft Categorization</h3>
+<p>A fully automated categorization system makes a binary decision on each documentcategory pair. Such a system is said to be doing thehardcategorization. The level
+of performance currently achieved by fully automatic systems, however, may be
+insufficient for some applications. Then, a semiautomated approach is appropriate
+in which the decision to assign a document to a category is made by a human for
+whom the TC system provides a list of categories arranged by the system’s estimated
+appropriateness of the category for the document. In this case, the system is said to
+be doing thesoftorrankingcategorization. Many classifiers described in this chapter
+actually have the whole segment [0, 1] as their range – that is, they produce a real
+value between zero and one for each document-category pair. This value is called
+acategorization status value(CSV). Such “continuous” classifiers naturally perform
+ranking categorization, but if a binary decision is needed it can be produced by
+checking the CSV against a specific threshold.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>DOCUMENT REPRESENTATION</h2>
+<p>The common classifiers and learning algorithms cannot directly process the text documents in their original form. Therefore, during a preprocessing step, the documents
+are converted into a more manageable representation. Typically, the documents are
+represented byfeature vectors. A feature is simply an entity without internal structure – a dimension in the feature space. A document is represented as a vector in this
+space – a sequence of features and their weights.</p>
+
+<p>The most commonbag-of-wordsmodel simply uses all words in a document as
+the features, and thus the dimension of the feature space is equal to the number of
+different words in all of the documents. The methods of giving weights to the features
+may vary. The simplest is thebinaryin which the feature weight is either one – if the
+corresponding word is present in the document – or zero otherwise. More complex
+weighting schemes are possible that take into account the frequencies of the word
+in the document, in the category, and in the whole collection. The most common
+TF-IDF scheme gives the word $w$ in the document $d$ the weight
+$$TF-IDF\_Weight(w, d) = TermFreq(w, d) \cdot \log(N/DocFreq(w)),$$
+where $TermFreq(w, d)$ is the frequency of the word in the documents, $N$ is the number of all documents, and $DocFreq(w)$ is the number of documents containing teh word $w$.
+
+</p>
+
+
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
