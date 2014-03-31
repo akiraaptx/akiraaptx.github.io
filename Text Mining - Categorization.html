@@ -159,10 +159,39 @@ to develop an application based on text categorization.
 
 <h3>
 <a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Probabilistic Classifiers</h3>
+Probabilistic classifiers view the categorization status value CSV$(d, c)$ as the probability $P(c| d)$ that the document $d$ belongs to the category $c$ and compute this probability by an application of Bayes’ theorem:
+\begin{equation}
+\displaystyle
+P(c|d) = \frac{P(d|c)P(c)}{P(d)}.
+\end{equation}
+The marginal probability $P(d)$ need not ever be computed because it is constant for all
+categories. To calculate $P(d|c)$, however, we need to make some assumptions about the structure of the document d. With the document representation as a feature vector $d=(w1, w2,\dots)$, the most common assumption is that all coordinates are independent, and thus
+\begin{equation}
+\displaystyle
+P(d|c) = \prod_{i}P(w_i|c).
+\end{equation}
+The classifiers resulting from this assumption are called Naive Bayes (NB) classifiers. They are called “naive” because the assumption is never verified and often is quite obviously false. However, the attempts to relax the naive assumption and to use the probabilistic models with dependence so far have not produced any significant improvement in performance. 
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Bayesian Logistic Regression</h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Example-Based Classifiers</h3>
+<p>Example-based classifiers do not build explicit declarative representations of categories but instead rely on directly computing the similarity between the document to
+be classified and the training documents. Those methods have thus been called lazy
+learners because they defer the decision on how to generalize beyond the training
+data until each new query instance is encountered. “Training” for such classifiers
+consists of simply storing the representations of the training documents together
+with their category labels.</p>
 
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support Vector Machines</h3>
+<p>The support vector machine (SVM) algorithm is very fast and effective for text
+classification problems.</P>
+
+<p>In geometrical terms, a binary SVM classifier can be seen as a hyperplane in
+the feature space separating the points that represent the positive instances of the
+category from the points that represent the negative instances. The classifying hyperplane is chosen during training as the unique hyperplane that separates the known
+positive instances from the known negative instances with the maximal margin. The
+margin is the distance from the hyperplane to the nearest point from the positive and
+negative sets.</p>
 
 
 
