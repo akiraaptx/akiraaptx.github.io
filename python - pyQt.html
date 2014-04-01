@@ -1,0 +1,457 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Python</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/prism.css">
+
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/prism.js"></script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+      <header>
+        <h1 class="header">Akiraaptx in GitHub</h1>
+        <p class="header">Programming PAGE</p>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+
+        <ul>
+          <li><a class="buttons github" href="http://akiraaptx.github.com">GitHub</a></li>
+          <li><a class="buttons github" href="http://akiraaptx.github.com/Project">Project</a></li>
+          <li><a class="buttons github" href="https://www.facebook.com/yuan.ma.798">Facebook</a></li>
+        </ul>
+
+      </header>
+
+      <section>
+<h1>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>PyQt Tutorial</h1>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>New-sytle Signal and Slot Support</h2>
+<p>One of the key features of Qt is its use of signals and slots to communicate between objects. Their use encourages the development of reusable components.</p>
+
+<p>A signal is emitted when something of potential interest happens. A slot is a Python callable. If a signal is connected to a slot then the slot is called when the signal is emitted. If a signal isn’t connected then nothing happens. The code (or component) that emits the signal does not know or care if the signal is being used.</p>
+
+<ul>
+<li>A signal may be connected to many slots.</li>
+<li>A signal may also be connected to another signal.</li>
+<li>Signal arguments may be any Python type.</li>
+<li>A slot may be connected to many signals.</li>
+<li>Connections may be direct (ie. synchronous) or queued (ie. asynchronous).</li>
+<li>Connections may be made across threads.</li>
+<li>Signals may be disconnected.</li>
+</ul>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Unbound and Bound Signals</h3>
+
+<p>A signal (specifically an unbound signal) is an attribute of a class that is a sub-class of QObject. When a signal is referenced as an attribute of an instance of the class then PyQt4 automatically binds the instance to the signal in order to create a bound signal. This is the same mechanism that Python itself uses to create bound methods from class functions.</p>
+
+<p>A bound signal has connect(), disconnect() and emit() methods that implement the associated functionality. It also has a signal attribute that is the signature of the signal that would be returned by Qt’s SIGNAL() macro.</p>
+
+<p>A signal may be overloaded, ie. a signal with a particular name may support more than one signature. A signal may be indexed with a signature in order to select the one required. A signature is a sequence of types. A type is either a Python type object or a string that is the name of a C++ type. The name of a C++ type is automatically normalised so that, for example, QString can be used instead of the non-normalised const QString &.</p>
+
+<p>If a signal is overloaded then it will have a default that will be used if no index is given.</p>
+
+<p>When a signal is emitted then any arguments are converted to C++ types if possible. If an argument doesn’t have a corresponding C++ type then it is wrapped in a special C++ type that allows it to be passed around Qt’s meta-type system while ensuring that its reference count is properly maintained.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Defining New Signals with pyqtSignal( )</h3>
+<p>PyQt4 automatically defines signals for all Qt’s built-in signals. New signals can be defined as class attributes using the pyqtSignal() factory.</p>
+
+The following example shows the definition of a number of new signals:
+<pre><code class="language-python">
+from PyQt4.QtCore import QObject, pyqtSignal
+
+class Foo(QObject):
+
+    # This defines a signal called 'closed' that takes no arguments.
+    closed = pyqtSignal()
+
+    # This defines a signal called 'rangeChanged' that takes two
+    # integer arguments.
+    range_changed = pyqtSignal(int, int, name='rangeChanged')
+
+    # This defines a signal called 'valueChanged' that has two overloads,
+    # one that takes an integer argument and one that takes a QString
+    # argument.  Note that because we use a string to specify the type of
+    # the QString argument then this code will run under Python v2 and v3.
+    valueChanged = pyqtSignal([int], ['QString'])</code></pre>
+
+The following code demostrates the definition, connection and emit of a signal without arguments:
+<pre><code class="language-python">
+from PyQt4.QtCore import QObject, pyqtSignal
+
+class Foo(QObject):
+
+    # Define a new signal called 'trigger' that has no arguments.
+    trigger = pyqtSignal()
+
+    def connect_and_emit_trigger(self):
+        # Connect the trigger signal to a slot.
+        self.trigger.connect(self.handle_trigger)
+
+        # Emit the signal.
+        self.trigger.emit()
+
+    def handle_trigger(self):
+        # Show that the slot has been called.
+
+        print "trigger signal received"</code></pre>
+
+The following code demonstrates the connection of overloaded signals:
+<pre><code class="language-python">
+from PyQt4.QtGui import QComboBox
+
+class Bar(QComboBox):
+
+    def connect_activated(self):
+        # The PyQt4 documentation will define what the default overload is.
+        # In this case it is the overload with the single integer argument.
+        self.activated.connect(self.handle_int)
+
+        # For non-default overloads we have to specify which we want to
+        # connect.  In this case the one with the single string argument.
+        # (Note that we could also explicitly specify the default if we
+        # wanted to.)
+        self.activated[str].connect(self.handle_string)
+
+    def handle_int(self, index):
+        print "activated signal passed integer", index
+
+    def handle_string(self, text):
+        print "activated signal passed QString", text</code></pre>
+
+<h1>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Example</h1>
+
+
+<pre><code class="language-python">
+# Author: Peter Prettenhofer <peter.prettenhofer@gmail.com>
+#         Olivier Grisel <olivier.grisel@ensta.org>
+#         Mathieu Blondel <mathieu@mblondel.org>
+#         Lars Buitinck <L.J.Buitinck@uva.nl>
+# License: BSD 3 clause
+
+from __future__ import print_function
+
+import logging
+import numpy as np
+from optparse import OptionParser
+import sys
+from time import time
+import pylab as pl
+
+from sklearn.datasets import fetch_20newsgroups
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
+from sklearn.feature_selection import SelectKBest, chi2
+from sklearn.linear_model import RidgeClassifier
+from sklearn.svm import LinearSVC
+from sklearn.linear_model import SGDClassifier
+from sklearn.linear_model import Perceptron
+from sklearn.linear_model import PassiveAggressiveClassifier
+from sklearn.naive_bayes import BernoulliNB, MultinomialNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import NearestCentroid
+from sklearn.utils.extmath import density
+from sklearn import metrics
+
+
+# Display progress logs on stdout
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s')
+
+
+# parse commandline arguments
+op = OptionParser()
+op.add_option("--report",
+              action="store_true", dest="print_report",
+              help="Print a detailed classification report.")
+op.add_option("--chi2_select",
+              action="store", type="int", dest="select_chi2",
+              help="Select some number of features using a chi-squared test")
+op.add_option("--confusion_matrix",
+              action="store_true", dest="print_cm",
+              help="Print the confusion matrix.")
+op.add_option("--top10",
+              action="store_true", dest="print_top10",
+              help="Print ten most discriminative terms per class"
+                   " for every classifier.")
+op.add_option("--all_categories",
+              action="store_true", dest="all_categories",
+              help="Whether to use all categories or not.")
+op.add_option("--use_hashing",
+              action="store_true",
+              help="Use a hashing vectorizer.")
+op.add_option("--n_features",
+              action="store", type=int, default=2 ** 16,
+              help="n_features when using the hashing vectorizer.")
+op.add_option("--filtered",
+              action="store_true",
+              help="Remove newsgroup information that is easily overfit: "
+                   "headers, signatures, and quoting.")
+
+(opts, args) = op.parse_args()
+if len(args) > 0:
+    op.error("this script takes no arguments.")
+    sys.exit(1)
+
+print(__doc__)
+op.print_help()
+print()
+
+
+###############################################################################
+# Load some categories from the training set
+if opts.all_categories:
+    categories = None
+else:
+    categories = [
+        'alt.atheism',
+        'talk.religion.misc',
+        'comp.graphics',
+        'sci.space',
+    ]
+
+if opts.filtered:
+    remove = ('headers', 'footers', 'quotes')
+else:
+    remove = ()
+
+print("Loading 20 newsgroups dataset for categories:")
+print(categories if categories else "all")
+
+data_train = fetch_20newsgroups(subset='train', categories=categories,
+                                shuffle=True, random_state=42,
+                                remove=remove)
+
+data_test = fetch_20newsgroups(subset='test', categories=categories,
+                               shuffle=True, random_state=42,
+                               remove=remove)
+print('data loaded')
+
+categories = data_train.target_names    # for case categories == None
+
+
+def size_mb(docs):
+    return sum(len(s.encode('utf-8')) for s in docs) / 1e6
+
+data_train_size_mb = size_mb(data_train.data)
+data_test_size_mb = size_mb(data_test.data)
+
+print("%d documents - %0.3fMB (training set)" % (
+    len(data_train.data), data_train_size_mb))
+print("%d documents - %0.3fMB (test set)" % (
+    len(data_test.data), data_test_size_mb))
+print("%d categories" % len(categories))
+print()
+
+# split a training set and a test set
+y_train, y_test = data_train.target, data_test.target
+
+print("Extracting features from the training dataset using a sparse vectorizer")
+t0 = time()
+if opts.use_hashing:
+    vectorizer = HashingVectorizer(stop_words='english', non_negative=True,
+                                   n_features=opts.n_features)
+    X_train = vectorizer.transform(data_train.data)
+else:
+    vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5,
+                                 stop_words='english')
+    X_train = vectorizer.fit_transform(data_train.data)
+duration = time() - t0
+print("done in %fs at %0.3fMB/s" % (duration, data_train_size_mb / duration))
+print("n_samples: %d, n_features: %d" % X_train.shape)
+print()
+
+print("Extracting features from the test dataset using the same vectorizer")
+t0 = time()
+X_test = vectorizer.transform(data_test.data)
+duration = time() - t0
+print("done in %fs at %0.3fMB/s" % (duration, data_test_size_mb / duration))
+print("n_samples: %d, n_features: %d" % X_test.shape)
+print()
+
+if opts.select_chi2:
+    print("Extracting %d best features by a chi-squared test" %
+          opts.select_chi2)
+    t0 = time()
+    ch2 = SelectKBest(chi2, k=opts.select_chi2)
+    X_train = ch2.fit_transform(X_train, y_train)
+    X_test = ch2.transform(X_test)
+    print("done in %fs" % (time() - t0))
+    print()
+
+
+def trim(s):
+    """Trim string to fit on terminal (assuming 80-column display)"""
+    return s if len(s) <= 80 else s[:77] + "..."
+
+
+# mapping from integer feature name to original token string
+if opts.use_hashing:
+    feature_names = None
+else:
+    feature_names = np.asarray(vectorizer.get_feature_names())
+
+
+###############################################################################
+# Benchmark classifiers
+def benchmark(clf):
+    print('_' * 80)
+    print("Training: ")
+    print(clf)
+    t0 = time()
+    clf.fit(X_train, y_train)
+    train_time = time() - t0
+    print("train time: %0.3fs" % train_time)
+
+    t0 = time()
+    pred = clf.predict(X_test)
+    test_time = time() - t0
+    print("test time:  %0.3fs" % test_time)
+
+    score = metrics.f1_score(y_test, pred)
+    print("f1-score:   %0.3f" % score)
+
+    if hasattr(clf, 'coef_'):
+        print("dimensionality: %d" % clf.coef_.shape[1])
+        print("density: %f" % density(clf.coef_))
+
+        if opts.print_top10 and feature_names is not None:
+            print("top 10 keywords per class:")
+            for i, category in enumerate(categories):
+                top10 = np.argsort(clf.coef_[i])[-10:]
+                print(trim("%s: %s"
+                      % (category, " ".join(feature_names[top10]))))
+        print()
+
+    if opts.print_report:
+        print("classification report:")
+        print(metrics.classification_report(y_test, pred,
+                                            target_names=categories))
+
+    if opts.print_cm:
+        print("confusion matrix:")
+        print(metrics.confusion_matrix(y_test, pred))
+
+    print()
+    clf_descr = str(clf).split('(')[0]
+    return clf_descr, score, train_time, test_time
+
+
+results = []
+for clf, name in (
+        (RidgeClassifier(tol=1e-2, solver="lsqr"), "Ridge Classifier"),
+        (Perceptron(n_iter=50), "Perceptron"),
+        (PassiveAggressiveClassifier(n_iter=50), "Passive-Aggressive"),
+        (KNeighborsClassifier(n_neighbors=10), "kNN")):
+    print('=' * 80)
+    print(name)
+    results.append(benchmark(clf))
+
+for penalty in ["l2", "l1"]:
+    print('=' * 80)
+    print("%s penalty" % penalty.upper())
+    # Train Liblinear model
+    results.append(benchmark(LinearSVC(loss='l2', penalty=penalty,
+                                            dual=False, tol=1e-3)))
+
+    # Train SGD model
+    results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
+                                           penalty=penalty)))
+
+# Train SGD with Elastic Net penalty
+print('=' * 80)
+print("Elastic-Net penalty")
+results.append(benchmark(SGDClassifier(alpha=.0001, n_iter=50,
+                                       penalty="elasticnet")))
+
+# Train NearestCentroid without threshold
+print('=' * 80)
+print("NearestCentroid (aka Rocchio classifier)")
+results.append(benchmark(NearestCentroid()))
+
+# Train sparse Naive Bayes classifiers
+print('=' * 80)
+print("Naive Bayes")
+results.append(benchmark(MultinomialNB(alpha=.01)))
+results.append(benchmark(BernoulliNB(alpha=.01)))
+
+
+class L1LinearSVC(LinearSVC):
+
+    def fit(self, X, y):
+        # The smaller C, the stronger the regularization.
+        # The more regularization, the more sparsity.
+        self.transformer_ = LinearSVC(penalty="l1",
+                                      dual=False, tol=1e-3)
+        X = self.transformer_.fit_transform(X, y)
+        return LinearSVC.fit(self, X, y)
+
+    def predict(self, X):
+        X = self.transformer_.transform(X)
+        return LinearSVC.predict(self, X)
+
+print('=' * 80)
+print("LinearSVC with L1-based feature selection")
+results.append(benchmark(L1LinearSVC()))
+
+
+# make some plots
+
+indices = np.arange(len(results))
+
+results = [[x[i] for x in results] for i in range(4)]
+
+clf_names, score, training_time, test_time = results
+training_time = np.array(training_time) / np.max(training_time)
+test_time = np.array(test_time) / np.max(test_time)
+
+pl.figure(figsize=(12,8))
+pl.title("Score")
+pl.barh(indices, score, .2, label="score", color='r')
+pl.barh(indices + .3, training_time, .2, label="training time", color='g')
+pl.barh(indices + .6, test_time, .2, label="test time", color='b')
+pl.yticks(())
+pl.legend(loc='best')
+pl.subplots_adjust(left=.25)
+pl.subplots_adjust(top=.95)
+pl.subplots_adjust(bottom=.05)
+
+for i, c in zip(indices, clf_names):
+    pl.text(-.3, i, c)
+
+pl.show()
+</code></pre>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
