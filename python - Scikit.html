@@ -44,6 +44,7 @@
 <ul>
   <li><a href="http://scikit-learn.org/dev/tutorial/index.html">Reference</a></li>
   <li><a href="http://scikit-learn.org/dev/modules/generated/sklearn.datasets.load_files.html#sklearn.datasets.load_files">sklearn.datasets.load_files</a></li>
+  <li><a href="http://scikit-learn.org/dev/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer">sklearn.feature_extraction.text.CountVectorizer</a></li>
 </ul>
 
 
@@ -91,6 +92,98 @@ Nntp-Posting-Host: hampton
 >>> print(twenty_train.target_names[twenty_train.target[0]])
 comp.graphics
 </code></pre>
+
+<p>Supervised learning algorithms will require a category label for each document in the training set. In this case the category is the name of the newsgroup which also happens to be the name of the folder holding the individual documents.</p>
+
+<p>For speed and space efficiency reasons <strong>scikit-learn</strong> loads the target attribute as an array of integers that corresponds to the index of the category name in the <strong>target_names</strong> list. The category integer id of each sample is stored in the <strong>target</strong> attribute:
+<pre><code class="language-python">twenty_train.target[:10]
+array([1, 1, 3, 3, 3, 3, 3, 2, 2, 2])
+</code></pre>
+</p>
+
+<p>It is possible to get back the category names as follows:
+<pre><code class="language-python">>>> for t in twenty_train.target[:10]:
+...     print(twenty_train.target_names[t])
+...
+comp.graphics
+comp.graphics
+soc.religion.christian
+soc.religion.christian
+soc.religion.christian
+soc.religion.christian
+soc.religion.christian
+sci.med
+sci.med
+sci.med
+</code></pre>
+You can notice that the samples have been shuffled randomly (with a fixed RNG seed): this is useful if you select only the first samples to quickly train a model and get a first idea of the results before re-training on the complete dataset later.
+</p>
+
+<h2>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Extracting features from text files</h2>
+<p>In order to perform machine learning on text documents, we first need to turn the text content into numerical feature vectors.</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Bags of words</h3>
+<p>The most intuitive way to do so is the bags of words representation:</p>
+<ul>
+  <li>assign a fixed integer id to each word occurring in any document of the training set (for instance by building a dictionary from words to integer indices).</li>
+  <li>for each document #i, count the number of occurrences of each word w and store it in X[i, j] as the value of feature #j where j is the index of word w in the dictionary</li>
+</ul>
+<p>The bags of words representation implies that <strong>n_features</strong> is the number of distinct words in the corpus: this number is typically larger that 100,000.</p>
+
+<p>If <strong>n_samples == 10000</strong>, strong <strong>X</strong> as a numpy array of float32 would require $10000 \times 10000 \times 4$ bytes = <strong>4GB in RAM</strong> which is barely manageable on today's computers.</p>
+
+<p>Fortunately, <strong>most values in X will be zeros</strong> since for a given document less than a couple thousands of distinct words will be used. For this reason we say that bags of words are typically <strong>high-dimensional sparese datasets</strong>. We can save a lot of memory by only storing the non-zero parts of the feature vectors in memory.</p>
+
+<p><strong>scipy.sparse</strong> matrices are data structures that do exactly this, and <strong>sciket-learn</strong> has built-in support for these structures.</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Tokenizing text with scikit-learn</h3>
+<p>Text preprocessing, tokenizing and filtering of stopwords are included in a high level component that is able to build a dictionary of features and transform documents to feature vectors:</p>
+
+<pre><code class="language-python">>>> from sklearn.feature_extraction.text import CountVectorizer
+>>> count_vect = CountVectorizer()
+>>> X_train_counts = count_vect.fit_transform(twenty_train.data)
+>>> X_train_counts.shape
+(2257, 35788)
+</code></pre>
+
+<p>
+  <strong>CountVectorizer</strong> supports counts of N-grams of words or consequective characters. Once fitted, the vectorizer has built a dictionary of feature indices:
+  <pre><code class="language-python">>>> count_vect.vocabulary_.get(u'algorithm')
+4690</code></pre>
+The index value of a word in the vocabulary is linked to its frequency in the whole training corpus.
+</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>From occurrences to frequencies</h3>
+<p>Occurrence count is a good start but there is an issue: longer documents will have higher average count values than shorter documents, even though they might talk about the same topics.</p>
+
+<p>To avoid these potential discrepancies it suffices to divide the number of occurrences of each word in a document by the total number of words in the document: these new features are called <strong>tf</strong> for Term Frequencies.</p>
+
+<p>Another refinement on top of tf is to downscale weights for words that occur in many documents in the corpus and are therefore less informative than those that occur only in a smaller portion of the corpus.</p>
+
+<p>This downscaling is called <strong>tf–idf</strong> for “Term Frequency times Inverse Document Frequency”.</p>
+
+<p> Both <strong>tf</strong> and <strong>tf–idf</strong> can be computed as follows:
+  <pre><code class="language-python">>>> from sklearn.feature_extraction.text import TfidfTransformer
+>>> tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
+>>> X_train_tf = tf_transformer.transform(X_train_counts)
+>>> X_train_tf.shape
+(2257, 35788)</code></pre>
+
+<h2>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Training a classifier</h2>
+
+<h2>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Building a pipeline</h2>
+
+<h2>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Evaluation of the performance on the test set</h2>
+
+<h2>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Parameter tuning using grid search</h2>
 
 
 
