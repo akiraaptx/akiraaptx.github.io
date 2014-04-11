@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Python/PyQt/QThread</title>
+
+    <link rel="stylesheet" href="https://s3.amazonaws.com/akiraaptGithub/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://s3.amazonaws.com/akiraaptGithub/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="https://s3.amazonaws.com/akiraaptGithub/stylesheets/prism.css">
+
+    <script src="javascripts/scale.fix.js"></script>
+    <script src="https://s3.amazonaws.com/akiraaptGithub/javascripts/prism.js"></script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+    <script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+      <header>
+        <h1 class="header">Akiraaptx in GitHub</h1>
+        <p class="header">Programming PAGE</p>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+
+        <ul>
+          <li><a class="buttons github" href="http://akiraaptx.github.com">GitHub</a></li>
+          <li><a class="buttons github" href="http://akiraaptx.github.com/Project">Project</a></li>
+          <li><a class="buttons github" href="https://www.facebook.com/yuan.ma.798">Facebook</a></li>
+        </ul>
+
+      </header>
+
+      <section>
+        <h1>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Gategorization</h1>
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>APPLICATIONS OF TEXT CATEGORIZATION</h2>
+<p>Three common TC applications are text indexing, document sorting and text filtering,
+and Web page categorization. These are only a small set of possible applications, but
+they demonstrate the diversity of the domain and the variety of the TC subcases.</p>
+
+<p>The other applications described in this section usually constrain the number of
+categories to which a document may belong. Hierarchical Web page categorization,
+however, constrains the number of documents belonging to a particular category to
+prevent the categories from becoming excessively large. Whenever the number of
+documents in a category exceedsk, it should be split into two or more subcategories.
+Thus, the categorization system must support adding new categories and deleting
+obsolete ones.</p>
+
+<p>Another feature of the problem is the hypertextual nature of the documents. The
+Web documents contain links, which may be important sources of information for
+the classifier because linked documents often share semantics.</p>
+
+<p>The hierarchical structure of the set of categories is also uncommon. It can be
+dealt with by using a separate classifier at every branching point of the hierarchy.</p>
+
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Hierarchical Web Page Categorization</h3>
+<p>A common use of TC is the automatic classification of Web pages under the hierarchical catalogues posted by popular Internet portals such as Yahoo. Such catalogues
+are very useful for direct browsing and for restricting the query-based search to pages
+belonging to a particular topic.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>DEFINITION OF THE PROBLEM</h2>
+<p>The general text categorization task can be formally defined as the task of approximating an unknown category assignment function $F: D \times C \to \{0,1\}$, where $D$ is the set of all possible documents and $C$ is the set of predefined categories. The value of $F(d, c)$ is 1 if the document $d$ belongs to the category $c$ and 0 otherwirse. The approximating function $M: D \times C \to \{0, 1\}$ is called a classifier, and the task is to build a classifier that produces results as "close" as possible to the true category assignment function $F$.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Single-Label versus Multilabel Categoization</h3>
+<p>Depending on the properties of $F$, we can distinguish between single-lable an multilabel categorization. In multilabel categorization the categories overlap, and a doucment may belong to any number of categories. In single-label categorization, each doucment belongs to exactly one category. Binary categorization is a special case of single-label categorization in which the number of categories is two. The binary case is the most important because it is the simplest, most common, and most often used for the demonstration of categorization techniques. Also, the general single-label case is frequently a simple generalization of the binary case. The multilabel case can be solved by $|C|$ binary classifiers ($|C|$ is the number of categories), one for each category, provided the decisions to assign a document to different ctegories are independent from each other.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Document-Pivoted versus Category-Pivoted Categorization</h3>
+<p>Usually, the classifiers are used in the following way: Given a document, the classifier finds all categories to which the document belongs. This is called adocument-pivoted categorization. Alternatively, we might need to find all documents that should be filed under a given category. This is called acategory-pivoted categorization. The difference is significant only in the case in which not all documents or not all categories are immediately available. For instance, in “online” categorization, the documents come in one-by-one, and thus only the document-pivoted categorization is possible. On the other hand, if the categories set is not fixed, and if the documents need to be
+reclassified with respect to the newly appearing categories, then category-pivoted categorization is appropriate. However, most of the techniques described in this
+chapter allow both.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Hard versus Soft Categorization</h3>
+<p>A fully automated categorization system makes a binary decision on each documentcategory pair. Such a system is said to be doing thehardcategorization. The level
+of performance currently achieved by fully automatic systems, however, may be
+insufficient for some applications. Then, a semiautomated approach is appropriate
+in which the decision to assign a document to a category is made by a human for
+whom the TC system provides a list of categories arranged by the system’s estimated
+appropriateness of the category for the document. In this case, the system is said to
+be doing thesoftorrankingcategorization. Many classifiers described in this chapter
+actually have the whole segment [0, 1] as their range – that is, they produce a real
+value between zero and one for each document-category pair. This value is called
+acategorization status value(CSV). Such “continuous” classifiers naturally perform
+ranking categorization, but if a binary decision is needed it can be produced by
+checking the CSV against a specific threshold.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>DOCUMENT REPRESENTATION</h2>
+<p>The common classifiers and learning algorithms cannot directly process the text documents in their original form. Therefore, during a preprocessing step, the documents
+are converted into a more manageable representation. Typically, the documents are
+represented byfeature vectors. A feature is simply an entity without internal structure – a dimension in the feature space. A document is represented as a vector in this
+space – a sequence of features and their weights.</p>
+
+<p>The most commonbag-of-wordsmodel simply uses all words in a document as
+the features, and thus the dimension of the feature space is equal to the number of
+different words in all of the documents. The methods of giving weights to the features
+may vary. The simplest is thebinaryin which the feature weight is either one – if the
+corresponding word is present in the document – or zero otherwise. More complex
+weighting schemes are possible that take into account the frequencies of the word
+in the document, in the category, and in the whole collection. The most common
+TF-IDF scheme gives the word $w$ in the document $d$ the weight
+$$TF-IDF\_Weight(w, d) = TermFreq(w, d) \cdot \log(N/DocFreq(w)),$$
+where $TermFreq(w, d)$ is the frequency of the word in the documents, $N$ is the number of all documents, and $DocFreq(w)$ is the number of documents containing teh word $w$.
+</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Feature Selection</h3>
+<p>The number of different words is large even in relatively small documents such as
+short news articles or paper abstracts. The number of different words in big document collections can be huge. The dimension of the bag-of-words feature space for a
+big collection can reach hundreds of thousands; moreover, the document representation vectors, although sparse, may still have hundreds and thousands of nonzero
+components.</p>
+
+<p>Most of those words are irrelevant to the categorization task and can be dropped
+with no harm to the classifier performance and may even result in improvement
+owing to noise reduction. The preprocessing step that removes the irrelevant words
+is called feature selection. Most TC systems at least remove the stop words– the
+function words and in general the common words of the language that usually do
+not contribute to the semantics of the documents and have no real added value.
+Many systems, however, perform a much more aggressive filtering, removing 90 to
+99 percent of all features.</p>
+
+<p>In order to perform the filtering, a measure of the relevance of each feature needs to be defined. Probably the simplest such measure is the document frequency $DocFreq(w)$. Experimental evidence suggests that using only the top 10 percent of the most frequent words does not reduce the performance of classifiers. This seems to contradict the well-known “law” of IR, according to which the terms with low-to-medium document frequency are the most informative. There is no contradiction, however, because the large majority of all words have a very low document frequency, and the top 10 percent do contain all low-to-medium frequency words.</p>
+
+<h3>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Dimensionality Reduction by Feature Extraction</h3>
+<p>Another way of reducing the number of dimensions is to create a new, much smaller
+set of synthetic features from the original feature set. In effect, this amounts to creating a transformation from the original feature space to another space of much lower
+dimension. The rationale for using synthetic features rather than naturally occurring words (as the simpler feature filtering method does) is that, owing to polysemy,
+homonymy, and synonymy, the words may not be the optimal features. By transforming the set of features it may be possible to create document representations that do
+not suffer from the problems inherent in those properties of natural language.</p>
+
+<h2>
+<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>MACHINE LEARNING APPROACH TO TC</h2>
+<p>In the ML approach, the classifier is built automatically by learning the properties
+of categories from a set of preclassified training documents. In the ML terminology,
+the learning process is an instance of supervised learning because the process is
+guided by applying the known true category assignment function on the training
+set. The unsupervised version of the classification task, calledclustering, is described
+in Chapter V. There are many approaches to classifier learning; some of them are
+variants of more general ML algorithms, and others have been created specifically
+for categorization.</p>
+
+<p>Four main issues need to be considered when using machine learning techniques
+to develop an application based on text categorization.
+  <ul>
+    <li>First, we need to decide on the categories that will be used to classify the instances.</li>
+    <li>Second, we need to provide a training set for each of the categories. As a rule of thumb, about 30 examples are needed for each category.</li>
+    <li>Third, we need to decide on the features that represent each of the instances. Usually, it is better to generate as many features as possible because most of the algorithms will be able to focus just on the relevant features.</li>
+    <li>Finally, we need to decide on the algorithm to be used for the categorization.</li>
+  </ul>        
+</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Probabilistic Classifiers</h3>
+Probabilistic classifiers view the categorization status value CSV$(d, c)$ as the probability $P(c| d)$ that the document $d$ belongs to the category $c$ and compute this probability by an application of Bayes’ theorem:
+\begin{equation}
+\displaystyle
+P(c|d) = \frac{P(d|c)P(c)}{P(d)}.
+\end{equation}
+The marginal probability $P(d)$ need not ever be computed because it is constant for all
+categories. To calculate $P(d|c)$, however, we need to make some assumptions about the structure of the document d. With the document representation as a feature vector $d=(w1, w2,\dots)$, the most common assumption is that all coordinates are independent, and thus
+\begin{equation}
+\displaystyle
+P(d|c) = \prod_{i}P(w_i|c).
+\end{equation}
+The classifiers resulting from this assumption are called Naive Bayes (NB) classifiers. They are called “naive” because the assumption is never verified and often is quite obviously false. However, the attempts to relax the naive assumption and to use the probabilistic models with dependence so far have not produced any significant improvement in performance. 
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Example-Based Classifiers</h3>
+<p>Example-based classifiers do not build explicit declarative representations of categories but instead rely on directly computing the similarity between the document to
+be classified and the training documents. Those methods have thus been called lazy
+learners because they defer the decision on how to generalize beyond the training
+data until each new query instance is encountered. “Training” for such classifiers
+consists of simply storing the representations of the training documents together
+with their category labels.</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support Vector Machines</h3>
+<p>The support vector machine (SVM) algorithm is very fast and effective for text
+classification problems.</P>
+
+<p>In geometrical terms, a binary SVM classifier can be seen as a hyperplane in
+the feature space separating the points that represent the positive instances of the
+category from the points that represent the negative instances. The classifying hyperplane is chosen during training as the unique hyperplane that separates the known
+positive instances from the known negative instances with the maximal margin. The
+margin is the distance from the hyperplane to the nearest point from the positive and
+negative sets.</p>
+
+
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
